@@ -16,9 +16,9 @@ The Subject in this Program may include:
   - IF-Else and For/while Loops 
   
  Administrative Email and Password may be found below!
- Email: zubu@ramen 
- Password: 12345 
+ - Email: zubu@ramen 
+ - Password: 12345 
  
- The Project are still under construction (mainly working on fstream files)
+ The Project are still under reconstruction (mainly working on fstream files)
  
   
