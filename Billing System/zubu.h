@@ -10,7 +10,7 @@ public:
 	void customers();
 	void add();
 	void edit();
-	void remove();
+	void removeProduct();
 	void list();
 	void printReceipt();
 

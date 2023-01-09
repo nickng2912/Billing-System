@@ -25,7 +25,7 @@ void Zubu::menu() {
 		cout << endl << "Password: ";
 		cin >> password;
 
-		if (email == "trung.ng2912@gmail" && password == "123456789")
+		if (email == "zubu@ramen" && password == "12345")
 		{
 			administrator();
 		}
@@ -67,7 +67,7 @@ void Zubu::administrator() {
 		edit(); 
 	}
 	else if (choice == 3) {
-		remove(); 
+		removeProduct(); 
 	}
 	else if (choice == 4) {
 		menu();
@@ -162,7 +162,7 @@ void Zubu::add() {
 void Zubu::edit() {
 
 	fstream data1, data2;
-	int productKey; 
+	int productKey = 0;
 	int token = 0; 
 	int newCode; 
 	float newPrice; 
@@ -172,7 +172,7 @@ void Zubu::edit() {
 	cout << "-------------------------------------------\n";
 	cout << "\t Edit a Product Record" << endl;
 	cout << "Product Code of the Product: "; 
-	cin >> code; 
+	cin >> productKey; 
 	
 	data1.open("database.txt", ios::in);
 
@@ -198,6 +198,7 @@ void Zubu::edit() {
 				
 				cout << "Record Edited!" << endl; 
 				token++;
+				break;
 			}
 			else {
 				data2 << " " << code << " " << productName << " " << price << " " << discount << endl; 
@@ -214,4 +215,135 @@ void Zubu::edit() {
 			cout << endl << "Record Not Found!" << endl; 
 		}
 	}
+}
+
+void Zubu::removeProduct() {
+
+	fstream data1, data2; 
+	int productKey; 
+	int token = 0; 
+
+	cout << "-------------------------------------------\n";
+	cout << "\t Delete Products" << endl;
+	cout << "Product Code of the Product: ";
+	cin >> productKey; 
+
+	data1.open("database.txt", ios::in);
+
+	if (!data1) {
+		cout << "File Does Not Exist!" << endl; 
+	}
+	else {
+		data2.open("databaseTEMP.txt", ios::app | ios::out);
+		data1 >> code >> productName >> price >> discount; 
+
+		while (!data1.eof()) {
+			if (code == productKey) {
+				cout << endl << "Product Deleted Successfully!" << endl; 
+				token++; 
+			}
+			else {
+				data2 << " " << code << " " << productName << " " << price << " " << discount << endl; 
+			}
+			data1 >> code >> productName >> price >> discount;
+		}
+		data1.close(); 
+		data2.close(); 
+
+		remove("database.txt");
+		rename("databaseTEMP.txt", "database.txt");
+		
+		if (token == 0)
+			cout << endl << "Record Not Found " << endl; 
+	}
+}
+
+void Zubu::list() {
+
+	fstream value; 
+	value.open("database.txt", ios::in); 
+
+	cout << "-------------------------------------------\n";
+	cout << "\t List of Products" << endl;
+	cout << "Product Code \t  Product Name \t  Product Price" << endl; 
+	value >> code >> productName >> price >> discount; 
+
+	while (!value.eof()) {
+		cout << code << "\t\t" << productName << "\t\t" << price << endl; 
+		value >> code >> productName >> price >> discount;
+	}
+	value.close();
+}
+
+void Zubu::printReceipt() {
+
+	fstream value; 
+
+	int arrCode[100]; 
+	int arrQuantity[100]; 
+	char choice; 
+	int index = 0; 
+	float amount = 0;
+	float disc = 0; 
+	float total = 0;
+
+	cout << "-------------------------------------------\n";
+	cout << "\t RECEIPT" << endl;
+
+	value.open("database.txt", ios::in);
+	if (!value) {
+		cout << "Empty Database!" << endl;
+	}
+	else {
+		value.close();
+
+		list();
+		cout << "-------------------------------------------\n";
+		cout << endl << "Please Place The Order  " << endl;
+		cout << "-------------------------------------------\n";
+
+		do {
+			start:
+			cout << endl << "Enter the Product Code: ";
+			cin >> arrCode[index];
+
+			cout << endl << "Enter the Quantity: ";
+			cin >> arrQuantity[index];
+
+			for (int i = 0; i < index; i++)
+			{
+				if (arrCode[index] == arrCode[i]) {
+					cout << "Duplicate Product Code!" << endl;
+					cout << "Please Try Again!" << endl;
+					goto start;
+				}
+			}
+			index++;
+			cout << endl << "Do you want to buy another Product? If Yes then press y, If No then press n";
+			cin >> choice;
+
+		} while (choice == 'y');
+		
+		cout << endl << endl << "\t\t Receipt" << endl; 
+		cout << endl << "Product Code \t Product Name \t Produce Quantity \t Price \t Total \t Total With Discount" << endl; 
+
+		for (int i = 0; i < index; i++) {
+			value.open("database.txt", ios::in); 
+			value >> code >> productName >> price >> discount; 
+
+			while (!value.eof()) {
+				if (code == arrCode[i]) {
+					amount = price * arrQuantity[i];
+					disc = amount - (amount * disc / 100); 
+					total = total + disc;
+					cout << endl << code << "\t\t" << productName << "\t\t" << arrQuantity[i] << "\t\t" << amount << "\t\t" << disc;
+				}
+				value >> code >> productName >> price >> discount; 
+			}
+		}
+		value.close(); 
+	}
+
+	cout << "-------------------------------------------\n";
+	cout << endl << "Total Amount: " << total << endl;
 }
