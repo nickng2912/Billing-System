@@ -11,9 +11,9 @@ Since this is the first attempt, there might be erros related to the logic of th
 The reference is from my Computer Science Class (CMPT135 - Introduction to Computer Programming II) 
 
 The Subject in this Program may include: 
-  Class/Objects (OOP) 
-  Stream and FStream (read and write a textfile)
-  IF-Else and For/while Loops 
+  - Class/Objects (OOP) 
+  - Stream and FStream (read and write a textfile)
+  - IF-Else and For/while Loops 
   
  Administrative Email and Password may be found below!
  Email: zubu@ramen 
