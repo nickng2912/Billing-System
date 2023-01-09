@@ -279,9 +279,9 @@ void Zubu::printReceipt() {
 
 	fstream value; 
 
-	int arrCode[100]; 
-	int arrQuantity[100]; 
-	char choice; 
+	int arrCode[100] {};
+	int arrQuantity[100] {};
+	char choice = 0; 
 	int index = 0; 
 	float amount = 0;
 	float disc = 0; 
@@ -344,6 +344,6 @@ void Zubu::printReceipt() {
 		value.close(); 
 	}
 
-	cout << "-------------------------------------------\n";
+	cout << endl << "-------------------------------------------\n";
 	cout << endl << "Total Amount: " << total << endl;
 }
